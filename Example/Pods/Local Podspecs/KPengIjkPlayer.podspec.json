@@ -1,0 +1,22 @@
+{
+  "name": "KPengIjkPlayer",
+  "version": "0.1.0",
+  "summary": "A short description of KPengIjkPlayer.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/294336370@qq.com/KPengIjkPlayer",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "294336370@qq.com": "295336370@qq.com"
+  },
+  "source": {
+    "git": "https://github.com/294336370@qq.com/KPengIjkPlayer.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "KPengIjkPlayer/Classes/**/*"
+}
