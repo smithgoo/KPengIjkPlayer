@@ -17,7 +17,8 @@ KPengIjkPlayer is available through [CocoaPods](https://cocoapods.org). To insta
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod 'KPengIjkPlayer'
+  pod 'KPengIjkPlayer',:git=>'https://github.com/smithgoo/KPengIjkPlayer.git'
+
 ```
 
 ## Author
