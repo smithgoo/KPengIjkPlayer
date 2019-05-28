@@ -40,9 +40,9 @@ TODO: Add long description of the pod here.
   # s.frameworks = 'UIKit', 'MapKit'
   s.dependency 'ijkplayer','~> 1.1.3'
 
-  s.vendored_frameworks = 'IJKMediaFrameworkWithSSL.framework'
-  s.frameworks  = "AudioToolbox", "AVFoundation", "CoreGraphics", "CoreMedia", "CoreVideo", "MobileCoreServices", "OpenGLES", "QuartzCore", "VideoToolbox", "Foundation", "UIKit", "MediaPlayer"
-  s.libraries   = "bz2", "z", "stdc++"
+#s.vendored_frameworks = 'IJKMediaFrameworkWithSSL.framework'
+#s.frameworks  = "AudioToolbox", "AVFoundation", "CoreGraphics", "CoreMedia", "CoreVideo", "MobileCoreServices", "OpenGLES", "QuartzCore", "VideoToolbox", "Foundation", "UIKit", "MediaPlayer"
+#s.libraries   = "bz2", "z", "stdc++"
 
-  s.requires_arc = true
+#s.requires_arc = true
 end
