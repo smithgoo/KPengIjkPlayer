@@ -117,7 +117,7 @@
     [self addSubview:_bottomPanel];
     
     _backBtn =[UIButton new];
-    [_backBtn setImage:[UIImage imageNamed:@"ic_player_return"] forState:UIControlStateNormal];
+    [_backBtn setImage:[self returnBundleImg:@"ic_player_return"] forState:UIControlStateNormal];
     [_toppanel addSubview:_backBtn];
     [_backBtn addTarget:self action:@selector(videobackAction:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -129,8 +129,8 @@
     
     _playBtn = [UIButton new];
     [_bottomPanel addSubview:_playBtn];
-    [_playBtn setImage:[UIImage imageNamed:@"ic_palyer_stop_s"] forState:UIControlStateNormal];
-    [_playBtn setImage:[UIImage imageNamed:@"ic_palyer_play_s"] forState:UIControlStateSelected];
+    [_playBtn setImage:[self returnBundleImg:@"ic_palyer_stop_s"] forState:UIControlStateNormal];
+    [_playBtn setImage:[self returnBundleImg:@"ic_palyer_play_s"] forState:UIControlStateSelected];
     [_playBtn addTarget:self action:@selector(playAction:) forControlEvents:UIControlEventTouchUpInside];
     
     _beginTimeLab = [UILabel new];
@@ -150,7 +150,7 @@
     
     _fullScreenBtn = [UIButton new];
     [_bottomPanel addSubview:_fullScreenBtn];
-    [_fullScreenBtn setImage:[UIImage imageNamed:@"ic_big"] forState:UIControlStateNormal];
+    [_fullScreenBtn setImage:[self returnBundleImg:@"ic_big"] forState:UIControlStateNormal];
     [_fullScreenBtn addTarget:self action:@selector(fullScreenAction:) forControlEvents:UIControlEventTouchUpInside];
     
     _mediaProgressSlider = [[UISlider alloc] init];
@@ -159,7 +159,7 @@
     _mediaProgressSlider.minimumTrackTintColor = [UIColor whiteColor];
     _mediaProgressSlider.maximumTrackTintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3];
     [_bottomPanel addSubview:_mediaProgressSlider];
-    [_mediaProgressSlider setThumbImage:[UIImage imageNamed:@"icon_progress"] forState:UIControlStateNormal];
+    [_mediaProgressSlider setThumbImage:[self returnBundleImg:@"icon_progress"] forState:UIControlStateNormal];
     [_mediaProgressSlider addTarget:self action:@selector(slideTouchDown) forControlEvents:UIControlEventTouchDown];
     [_mediaProgressSlider addTarget:self action:@selector(slideTouchCancel) forControlEvents:UIControlEventTouchCancel | UIControlEventTouchUpOutside];
     [_mediaProgressSlider addTarget:self action:@selector(slideTouchUpInside) forControlEvents:UIControlEventTouchUpInside];
@@ -168,8 +168,8 @@
     
     _lockedBtn = [UIButton new];
     [self addSubview:_lockedBtn];
-    [_lockedBtn setImage:[UIImage imageNamed:@"unlock"] forState:UIControlStateNormal];
-    [_lockedBtn setImage:[UIImage imageNamed:@"locked"] forState:UIControlStateSelected];
+    [_lockedBtn setImage:[self returnBundleImg:@"unlock"] forState:UIControlStateNormal];
+    [_lockedBtn setImage:[self returnBundleImg:@"locked"] forState:UIControlStateSelected];
     [_lockedBtn addTarget:self action:@selector(lockAction:) forControlEvents:UIControlEventTouchUpInside];
     
     _activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:(UIActivityIndicatorViewStyleWhiteLarge)];
@@ -219,11 +219,18 @@
     _gesturesView.frame =self.bounds;
     
     if (_isFullScreen) {
-        [_fullScreenBtn setImage:[UIImage imageNamed:@"ic_small"] forState:UIControlStateNormal];
+        [_fullScreenBtn setImage:[self returnBundleImg:@"ic_small"] forState:UIControlStateNormal];
     } else {
-        [_fullScreenBtn setImage:[UIImage imageNamed:@"ic_big"] forState:UIControlStateNormal];
+        [_fullScreenBtn setImage:[self returnBundleImg:@"ic_big"] forState:UIControlStateNormal];
     }
     
+}
+    
+- (UIImage*)returnBundleImg:(NSString*)imgStr {
+    NSString *bundlePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"KPengIjkPlayer" ofType:@"bundle"];
+    NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
+    UIImage *img = [UIImage imageNamed:imgStr inBundle:bundle compatibleWithTraitCollection:nil];
+    return img;
 }
 
 - (void)slideTouchDown
@@ -676,12 +683,18 @@
 - (void)setIsFullScreen:(BOOL)isFullScreen {
     _isFullScreen =isFullScreen;
     if (_isFullScreen) {
-        [self.toolsView.fullScreenBtn setImage:[UIImage imageNamed:@"ic_small"] forState:UIControlStateNormal];
+        [self.toolsView.fullScreenBtn setImage:[self returnBundleImg:@"ic_small"] forState:UIControlStateNormal];
     } else {
-        [self.toolsView.fullScreenBtn setImage:[UIImage imageNamed:@"ic_big"] forState:UIControlStateNormal];
+        [self.toolsView.fullScreenBtn setImage:[self returnBundleImg:@"ic_big"] forState:UIControlStateNormal];
     }
 }
 
+- (UIImage*)returnBundleImg:(NSString*)imgStr {
+        NSString *bundlePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"KPengIjkPlayer" ofType:@"bundle"];
+        NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
+        UIImage *img = [UIImage imageNamed:imgStr inBundle:bundle compatibleWithTraitCollection:nil];
+        return img;
+}
 - (void)fullScreenAction {
     if (self.delegate&&[self.delegate respondsToSelector:@selector(videoScreenFullScreenOrNot:)]) {
         [self.delegate videoScreenFullScreenOrNot:!_isFullScreen];
