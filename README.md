@@ -35,7 +35,7 @@ How to use
       
 		
 		
-		 #pragma mark -- ijk 封装完成之后在 控制器要实现的代理方法 begin  当然可以再简化
+#pragma mark -- ijk 封装完成之后在 控制器要实现的代理方法 begin  当然可以再简化
 	- (void)KPVideoPlayerDistory {
     [_videoPlayer.player stop];
     [_videoPlayer.player shutdown];
@@ -115,6 +115,7 @@ How to use
 }
 
 #pragma mark------ijk 播放的代理方法
+
 	-(void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator{
     
     if ([UIDevice currentDevice].orientation ==UIDeviceOrientationLandscapeLeft||[UIDevice currentDevice].orientation ==UIDeviceOrientationLandscapeRight){
