@@ -23,7 +23,7 @@ it, simply add the following line to your Podfile:
 
 ## Author
 
-294336370@qq.com, 295336370@qq.com
+294336370@qq.com
 
 ## License
 
@@ -33,16 +33,18 @@ KPengIjkPlayer is available under the MIT license. See the LICENSE file for more
 How to use
 
       
-      #pragma mark -- ijk 封装完成之后在 控制器要实现的代理方法 begin  当然可以再简化
-- (void)KPVideoPlayerDistory {
+		
+		
+		 #pragma mark -- ijk 封装完成之后在 控制器要实现的代理方法 begin  当然可以再简化
+	- (void)KPVideoPlayerDistory {
     [_videoPlayer.player stop];
     [_videoPlayer.player shutdown];
     [_videoPlayer.player.view removeFromSuperview];
     _videoPlayer = nil;
  
-}
+	}
 
-- (void)playerBackAction {
+	- (void)playerBackAction {
     if (!_videoPlayer.isFullScreen) {
         [_videoPlayer.player stop];
         [_videoPlayer.player shutdown];
@@ -56,14 +58,14 @@ How to use
         }];
     }
     
-}
+	}
 
-- (void)exchangeAction:(UIButton*)sender {
+	- (void)exchangeAction:(UIButton*)sender {
     [_videoPlayer exChangePlayMthod];
-}
+	}
 
 
-- (void)videoScreenFullScreenOrNot:(BOOL)isFullScreen {
+	- (void)videoScreenFullScreenOrNot:(BOOL)isFullScreen {
     if (isFullScreen) {//小屏->全屏
         [UIView animateWithDuration:0.25 animations:^{
             NSNumber * value  = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeRight];
@@ -78,17 +80,17 @@ How to use
     _videoPlayer.isFullScreen =isFullScreen;
     _videoPlayer.toolsView.isFullScreen =isFullScreen;
     
-}
+	}
 
 
 #pragma mark -与全屏相关的代理方法等
 
-BOOL fullScreen;
+	BOOL fullScreen;
 
-static UIButton * btnFullScreen;
+	static UIButton * btnFullScreen;
 
-//点击了全屏按钮
--(void)btnFullScreenDidClick:(UIButton *)sender{
+	//点击了全屏按钮
+	-(void)btnFullScreenDidClick:(UIButton *)sender{
     
     fullScreen = !fullScreen;
     
@@ -113,7 +115,7 @@ static UIButton * btnFullScreen;
 }
 
 #pragma mark------ijk 播放的代理方法
--(void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator{
+	-(void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator{
     
     if ([UIDevice currentDevice].orientation ==UIDeviceOrientationLandscapeLeft||[UIDevice currentDevice].orientation ==UIDeviceOrientationLandscapeRight){
         UIWindow*window= [UIApplication sharedApplication].keyWindow;
@@ -140,3 +142,6 @@ static UIButton * btnFullScreen;
 }
 
 #pragma mark -- ijk 封装完成之后在 控制器要实现的代理方法 end
+
+	
+	
