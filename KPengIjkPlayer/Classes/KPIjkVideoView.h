@@ -174,6 +174,10 @@ typedef NS_ENUM(NSUInteger,NetWork_State_Type) {
 
 //切换当前播放器的链接
 - (void)exChangePlayMthod;
+
+- (void)removeVideoPlayer;
+
+- (void)videoPlayrotateAction:(BOOL)isFullScreen;
 @end
 
 NS_ASSUME_NONNULL_END
