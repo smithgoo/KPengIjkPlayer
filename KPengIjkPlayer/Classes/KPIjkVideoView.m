@@ -890,6 +890,35 @@
 //    }
     
 }
+- (void)removeVideoPlayer {
+    if (self.player) {
+        [self.player shutdown];
+        [self.player.view removeFromSuperview];
+        self.player =nil;
+    }
+    
+}
+
+- (void)videoPlayrotateAction:(BOOL)isFullScreen {
+    if (isFullScreen) {//小屏->全屏
+        [UIView animateWithDuration:0.25 animations:^{
+            NSNumber * value  = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeRight];
+            [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
+        }];
+        
+        
+    }else{//全屏->小屏
+        [UIView animateWithDuration:0.25 animations:^{
+            NSNumber * value  = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+            [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
+            
+        }];
+        
+    }
+    self.isFullScreen = isFullScreen;
+    self.toolsView.isFullScreen =isFullScreen;
+    
+}
 
 
 @end
