@@ -34,30 +34,30 @@ How to use
 
       
 
-- (void)playerBackAction {
+	- (void)playerBackAction {
     if (!_videoPlayer.isFullScreen) {
         [self.navigationController popViewControllerAnimated:YES];
     } else {
         [_videoPlayer videoPlayrotateAction:NO];
     }
    
-}
+	}
 
-- (void)exchangeAction:(UIButton*)sender {
+	- (void)exchangeAction:(UIButton*)sender {
     [_videoPlayer exChangePlayMthod];
-}
+	}
 
 
 #pragma mark -与全屏相关的代理方法等
 
-- (void)videoScreenFullScreenOrNot:(BOOL)isFullScreen {
+	- (void)videoScreenFullScreenOrNot:(BOOL)isFullScreen {
     [_videoPlayer videoPlayrotateAction:isFullScreen];
-}
+	}
 
 
 
 #pragma mark------ijk 播放的代理方法
--(void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator{
+	-(void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator{
     
     if ([UIDevice currentDevice].orientation ==UIDeviceOrientationLandscapeLeft||[UIDevice currentDevice].orientation ==UIDeviceOrientationLandscapeRight){
         UIWindow*window= [UIApplication sharedApplication].keyWindow;
@@ -68,20 +68,20 @@ How to use
         [window addSubview:_videoPlayer];
       
     }else{
-//        if (KIsiPhoneX||KIsiPhoneXR||KIsiPhoneXS||KIsiPhoneXS_MAX) {
-//            _playerView.frame=CGRectMake(0, 30, size.width, size.width/16*9);
-//            _playerView.player.view.frame=CGRectMake(0, 30, size.width, size.width/16*9);
-//        } else {
+	//        if (KIsiPhoneX||KIsiPhoneXR||KIsiPhoneXS||KIsiPhoneXS_MAX) {
+	//            _playerView.frame=CGRectMake(0, 30, size.width, size.width/16*9);
+	//            _playerView.player.view.frame=CGRectMake(0, 30, size.width, size.width/16*9);
+	//        } else {
             _videoPlayer.frame=CGRectMake(0, 0, size.width, size.width/16*9);
             _videoPlayer.player.view.frame=CGRectMake(0, 0, size.width, size.width/16*9);
-//        }
+	//        }
         _videoPlayer.isFullScreen=NO;
         _videoPlayer.toolsView.isFullScreen =NO;
          [self.view addSubview:_videoPlayer];
       
     }
     
-}
+	}
 
 
 	
