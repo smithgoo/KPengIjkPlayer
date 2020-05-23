@@ -894,6 +894,7 @@
     if (self.player) {
         [self.player shutdown];
         [self.player.view removeFromSuperview];
+        [[NowTimeSpeed shareNetworkSpeed] stop];
         self.player =nil;
     }
     
