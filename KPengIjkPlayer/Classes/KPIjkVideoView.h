@@ -164,6 +164,8 @@ typedef NS_ENUM(NSUInteger,NetWork_State_Type) {
 @property (nonatomic,assign) id <KPVideoPlayerActionDelegate> delegate;
 //控制工具的view
 @property (nonatomic,strong) KPIjkVideoToolsView *toolsView;
+@property (nonatomic,copy) void(^videoPlayFinish)(void);
+@property (nonatomic,copy) void(^videoPlayError)(void);
 //初始化当前播放器顺带放入按钮
 -(instancetype)initWithFrame:(CGRect)frame delegate:(id)delegate playUrl:(NSString*)PlayUrl title:(NSString*)title;
 
