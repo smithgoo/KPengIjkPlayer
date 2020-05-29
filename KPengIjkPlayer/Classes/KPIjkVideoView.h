@@ -10,6 +10,7 @@
 #import <IJKMediaFramework/IJKMediaFramework.h>
 #import "BrightnessVolumeView.h"
 #import "BrightnessView.h"
+#import "KPCommonUIView.h"
 NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSUInteger, Direction) {
     DirectionLeftOrRight,
@@ -102,6 +103,8 @@ typedef NS_ENUM(NSUInteger,NetWork_State_Type) {
 
 @property (nonatomic,strong) UILabel *speedLab;
 
+@property (nonatomic,strong) KPCommonUIViewPlayError *errorView;
+
 //手势的view
 @property (nonatomic,strong) KPIjkVideoGestures *gesturesView;
 
@@ -162,6 +165,9 @@ typedef NS_ENUM(NSUInteger,NetWork_State_Type) {
 @property (nonatomic,strong) IJKFFMoviePlayerController *player;
 @property (nonatomic,strong) UIView *playVideoView;
 @property (nonatomic,assign) id <KPVideoPlayerActionDelegate> delegate;
+@property (nonatomic,copy) void(^videoPlayFinish)(void);
+@property (nonatomic,copy) void(^videoPlayError)(void);
+
 //控制工具的view
 @property (nonatomic,strong) KPIjkVideoToolsView *toolsView;
 //初始化当前播放器顺带放入按钮

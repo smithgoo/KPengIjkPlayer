@@ -11,6 +11,7 @@
 #import <IJKMediaFramework/IJKMediaPlayer.h>
 #import <IJKMediaFramework/IJKFFOptions.h>
 #import "NowTimeSpeed.h"
+#import "KPCommonUIView.h"
 
 
 @implementation KPIjkVideoGestures : UIView
@@ -75,7 +76,7 @@
     [self refreshMediaControl];
     self.volumeView.frame = CGRectMake(0, 0, self.frame.size.height, self.frame.size.height * 9.0 / 16.0);
     [BrightnessView sharedBrightnessView];
-
+    
     return self;
 }
 
@@ -163,7 +164,7 @@
     [_mediaProgressSlider addTarget:self action:@selector(slideTouchDown) forControlEvents:UIControlEventTouchDown];
     [_mediaProgressSlider addTarget:self action:@selector(slideTouchCancel) forControlEvents:UIControlEventTouchCancel | UIControlEventTouchUpOutside];
     [_mediaProgressSlider addTarget:self action:@selector(slideTouchUpInside) forControlEvents:UIControlEventTouchUpInside];
-
+    
     [_mediaProgressSlider addTarget:self action:@selector(slideValueChanged) forControlEvents:UIControlEventValueChanged];
     
     _lockedBtn = [UIButton new];
@@ -189,6 +190,9 @@
     _speedLab.textColor =[UIColor whiteColor];
     [_overlayPanel addSubview:_speedLab];
     
+    _errorView = [KPCommonUIViewPlayError new];
+    [_overlayPanel addSubview:_speedLab];
+    _errorView.hidden =YES;
     
     _gesturesView =[KPIjkVideoGestures new];
     _gesturesView.delegate =self;
@@ -216,6 +220,7 @@
     //设置小菊花的frame
     _activityIndicator.frame= CGRectMake((self.width-100)/2, (self.height-100)/2, 100, 100);
     _speedLab.frame =CGRectMake((self.width-100)/2, CGRectGetMaxY(_activityIndicator.frame)-20, 100, 30);
+    _errorView.frame =CGRectMake(50, 50, self.width-100, self.height-100);
     _gesturesView.frame =self.bounds;
     
     if (_isFullScreen) {
@@ -225,7 +230,7 @@
     }
     
 }
-    
+
 - (UIImage*)returnBundleImg:(NSString*)imgStr {
     NSString *bundlePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"KPengIjkPlayer" ofType:@"bundle"];
     NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
@@ -241,7 +246,7 @@
 
 - (void)slideTouchCancel
 {
-//    self.thumbnailsView.hidden =YES;
+    //    self.thumbnailsView.hidden =YES;
     [self endDragMediaSlider];
     if (self.delegate && [self.delegate respondsToSelector:@selector(didSliderCancelValueChanged)]) {
         [self.delegate didSliderCancelValueChanged];
@@ -266,9 +271,9 @@
     }
     NSInteger DragTime= position-self.globelSlideValue;
     //获取缩略图的时间是dragtime +self.delegatePlayer.currentPlaybackTime
-
+    
     //    NSInteger currentNeedTime =DragTime +self.delegatePlayer.currentPlaybackTime;
-//    [self getThumbViewWith:DragTime currentTime:(position+DragTime)];
+    //    [self getThumbViewWith:DragTime currentTime:(position+DragTime)];
     if (self.delegate&&[self.delegate respondsToSelector:@selector(didSliderValueChanged)]) {
         [self.delegate didSliderValueChanged];
     }
@@ -282,7 +287,7 @@
 
 - (void)endDragMediaSlider
 {
-//    self.thumbnailsView.hidden =YES;
+    //    self.thumbnailsView.hidden =YES;
     _isMediaSliderBeingDragged = NO;
 }
 
@@ -299,7 +304,7 @@
     if (!self.lockFlag) {
         _toppanel.hidden =_bottomPanel.hidden=_lockedBtn.hidden =self.lockFlag;
     } else {
-    [self performSelector:@selector(HiddenLock) withObject:nil afterDelay:4];
+        [self performSelector:@selector(HiddenLock) withObject:nil afterDelay:4];
     }
 }
 
@@ -359,7 +364,7 @@
     // status
     BOOL isPlaying = [self.delegatePlayer isPlaying];
     self.playBtn.selected =/*self.centerPlayerBtn.selected =*/ isPlaying;
-//    _centerPlayBtn.hidden = (isPlaying || [self.activiteView isAnimating]);
+    //    _centerPlayBtn.hidden = (isPlaying || [self.activiteView isAnimating]);
     
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(refreshMediaControl) object:nil];
@@ -385,7 +390,7 @@
         [NowTimeSpeed shareNetworkSpeed].downloadSpeed = ^(NSString * _Nonnull speed) {
             self.speedLab.text =speed;
         };
-       
+        
     }else{
         _activityIndicator.hidden = YES;
         [[NowTimeSpeed shareNetworkSpeed] stop];
@@ -409,9 +414,10 @@
 - (void)failPlayVideo {
     //停止状态刷新
     [self cancelDelayedRefresh];
-//    self.backBtn.hidden =NO;
+    //    self.backBtn.hidden =NO;
     self.playBtn.selected=/*self.centerPlayerBtn = */NO;
-//    self.showActivite = NO;
+    self.showActivite = NO;
+    [[NowTimeSpeed shareNetworkSpeed] stop];
     /**
      *  移除手势响应
      */
@@ -478,7 +484,7 @@
     if (_lockFlag) {
         return;
     }
-     if (self.direction ==DirectionLeftOrRight) {
+    if (self.direction ==DirectionLeftOrRight) {
         NSTimeInterval DragTime=(self.delegatePlayer.duration-self.delegatePlayer.currentPlaybackTime)*self.currentRate;
         self.delegatePlayer.currentPlaybackTime=(self.delegatePlayer.currentPlaybackTime+DragTime)<=0?0:(self.delegatePlayer.currentPlaybackTime+DragTime);
         
@@ -492,11 +498,11 @@
     if (_lockFlag) {
         return;
     }
-
+    
 }
 
 - (void)touchesMoveWithPoint:(CGPoint)point {
-
+    
     if (self.delegatePlayer==nil) {
         return;
     }
@@ -511,10 +517,10 @@
         if (panPoint.x >= 30 || panPoint.x <= -30) {
             //进度
             self.direction = DirectionLeftOrRight;
-         } else if (panPoint.y >= 30 || panPoint.y <= -30) {
+        } else if (panPoint.y >= 30 || panPoint.y <= -30) {
             //音量和亮度
             self.direction = DirectionUpOrDown;
-         }
+        }
     }
     
     
@@ -539,7 +545,7 @@
         NSTimeInterval position;
         position = self.delegatePlayer.currentPlaybackTime;
         //获取缩略图的时间是dragtime +self.delegatePlayer.currentPlaybackTime
-         
+        
         
         NSLog(@"滑动获得的%f",self.delegatePlayer.currentPlaybackTime);
     } else {
@@ -630,7 +636,7 @@
     self.toolsView.delegate = self;
     self.toolsView.delegatePlayer =self.player;
     [self addSubview:_toolsView];
-   
+    
 }
 
 
@@ -653,7 +659,7 @@
     if (self.delegate&&[self.delegate respondsToSelector:@selector(KPVideoPlayerDistory)]) {
         [self.delegate KPVideoPlayerDistory];
     }
-
+    
 }
 
 ////设置url 的方式和切换播放源的方式一样
@@ -690,10 +696,10 @@
 }
 
 - (UIImage*)returnBundleImg:(NSString*)imgStr {
-        NSString *bundlePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"KPengIjkPlayer" ofType:@"bundle"];
-        NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
-        UIImage *img = [UIImage imageNamed:imgStr inBundle:bundle compatibleWithTraitCollection:nil];
-        return img;
+    NSString *bundlePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"KPengIjkPlayer" ofType:@"bundle"];
+    NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
+    UIImage *img = [UIImage imageNamed:imgStr inBundle:bundle compatibleWithTraitCollection:nil];
+    return img;
 }
 - (void)fullScreenAction {
     if (self.delegate&&[self.delegate respondsToSelector:@selector(videoScreenFullScreenOrNot:)]) {
@@ -703,7 +709,7 @@
 
 - (void)didSliderCancelValueChanged {
     self.player.currentPlaybackTime = self.toolsView.mediaProgressSlider.value;
-
+    
 }
 
 
@@ -774,7 +780,7 @@
 - (void)loadStateDidChange:(NSNotification*)notification {
     
     [self.toolsView refreshMediaControl];
-
+    
     IJKMPMovieLoadState loadState = _player.loadState;
     
     if ((loadState & IJKMPMovieLoadStatePlaythroughOK) != 0) {
@@ -795,6 +801,9 @@
     switch (reason) {
         case IJKMPMovieFinishReasonPlaybackEnded:
             NSLog(@"playbackStateDidChange: 播放完毕: %d\n", reason);
+            if (self.videoPlayFinish) {
+                self.videoPlayFinish();
+            }
             break;
             
         case IJKMPMovieFinishReasonUserExited:
@@ -803,10 +812,11 @@
             
         case IJKMPMovieFinishReasonPlaybackError:
             NSLog(@"playbackStateDidChange: 播放出现错误: %d\n", reason);
-            
 #pragma mark-播放出现错误,需要添重新加载播放视频的按钮
-            
-            
+            self.toolsView.errorView.hidden = NO;
+            if (self.toolsView.errorView.errorClickCallback) {
+               self.toolsView.errorView.errorClickCallback();
+            }
             break;
             
         default:
@@ -821,7 +831,7 @@
 }
 
 - (void)moviePlayBackStateDidChange:(NSNotification*)notification {
-
+    
     if (self.player.playbackState==IJKMPMoviePlaybackStatePlaying) {
         //视频开始播放的时候开启计时器
         
@@ -885,9 +895,9 @@
     [self.toolsView failPlayVideo];
     
     
-//    if ([self.delegate respondsToSelector:@selector(playerViewFailePlay:)]) {
-//        [self.delegate playerViewFailePlay:self];
-//    }
+    //    if ([self.delegate respondsToSelector:@selector(playerViewFailePlay:)]) {
+    //        [self.delegate playerViewFailePlay:self];
+    //    }
     
 }
 - (void)removeVideoPlayer {
