@@ -795,6 +795,9 @@
     switch (reason) {
         case IJKMPMovieFinishReasonPlaybackEnded:
             NSLog(@"playbackStateDidChange: 播放完毕: %d\n", reason);
+            if (self.videoPlayFinish) {
+                self.videoPlayFinish();
+            }
             break;
             
         case IJKMPMovieFinishReasonUserExited:
@@ -803,7 +806,9 @@
             
         case IJKMPMovieFinishReasonPlaybackError:
             NSLog(@"playbackStateDidChange: 播放出现错误: %d\n", reason);
-            
+            if (self.videoPlayError) {
+                self.videoPlayError();
+            }
 #pragma mark-播放出现错误,需要添重新加载播放视频的按钮
             
             
