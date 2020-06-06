@@ -11,6 +11,7 @@
 #import <IJKMediaFramework/IJKMediaPlayer.h>
 #import <IJKMediaFramework/IJKFFOptions.h>
 #import "NowTimeSpeed.h"
+#import <CDNByeKit/CBP2pEngine.h>
 
 
 @implementation KPIjkVideoGestures : UIView
@@ -220,8 +221,16 @@
     
     if (_isFullScreen) {
         [_fullScreenBtn setImage:[self returnBundleImg:@"ic_small"] forState:UIControlStateNormal];
+        if ([self isNotchScreen]) {
+            _lockedBtn.frame =CGRectMake(30, (self.height-40)/2, 40, 40);
+            _backBtn.frame =CGRectMake(30, 5, 40, 40);
+            _playBtn.frame = CGRectMake(30, 5, 40, 40);
+        }
     } else {
         [_fullScreenBtn setImage:[self returnBundleImg:@"ic_big"] forState:UIControlStateNormal];
+        _toppanel.frame =CGRectMake(0, 25, self.width, 50);
+        _lockedBtn.frame =CGRectMake(10, (self.height-40)/2+12.5, 40, 40);
+
     }
     
 }
@@ -576,6 +585,25 @@
     }
 }
 
+// iPhoneX、iPhoneXR、iPhoneXs、iPhoneXs Max等
+// 判断刘海屏，返回YES表示是刘海屏
+- (BOOL)isNotchScreen {
+    
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        return NO;
+    }
+    
+    CGSize size = [UIScreen mainScreen].bounds.size;
+    NSInteger notchValue = size.width / size.height * 100;
+    
+    if (216 == notchValue || 46 == notchValue) {
+        return YES;
+    }
+    
+    return NO;
+}
+
+
 @end
 
 
@@ -612,10 +640,10 @@
     
     
     NSURL *playUrl  =[NSURL URLWithString:url];
+    NSURL*playUrl_new = [[CBP2pEngine sharedInstance] parseStreamURL:playUrl];
+    self.player = [[IJKFFMoviePlayerController alloc] initWithContentURL:playUrl_new withOptions:options];
     
-    self.player = [[IJKFFMoviePlayerController alloc] initWithContentURL:playUrl withOptions:options];
-    
-    [self.player setScalingMode:IJKMPMovieScalingModeFill];
+    [self.player setScalingMode:IJKMPMovieScalingModeNone];
     
     [self.player prepareToPlay];
     
