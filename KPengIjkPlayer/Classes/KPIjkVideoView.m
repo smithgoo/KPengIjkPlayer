@@ -228,8 +228,10 @@
         }
     } else {
         [_fullScreenBtn setImage:[self returnBundleImg:@"ic_big"] forState:UIControlStateNormal];
+        if ([self isNotchScreen]) {
         _toppanel.frame =CGRectMake(0, 25, self.width, 50);
         _lockedBtn.frame =CGRectMake(10, (self.height-40)/2+12.5, 40, 40);
+        }
 
     }
     
@@ -307,8 +309,10 @@
     self.lockFlag =sender.selected;
     if (!self.lockFlag) {
         _toppanel.hidden =_bottomPanel.hidden=_lockedBtn.hidden =self.lockFlag;
+        self.backBtn.enabled = YES;
     } else {
-    [self performSelector:@selector(HiddenLock) withObject:nil afterDelay:4];
+        self.backBtn.enabled =NO;
+        [self performSelector:@selector(HiddenLock) withObject:nil afterDelay:4];
     }
 }
 
@@ -712,8 +716,14 @@
     _isFullScreen =isFullScreen;
     if (_isFullScreen) {
         [self.toolsView.fullScreenBtn setImage:[self returnBundleImg:@"ic_small"] forState:UIControlStateNormal];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.player setScalingMode:IJKMPMovieScalingModeFill];
+        });
     } else {
         [self.toolsView.fullScreenBtn setImage:[self returnBundleImg:@"ic_big"] forState:UIControlStateNormal];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.player setScalingMode:IJKMPMovieScalingModeNone];
+        });
     }
 }
 
